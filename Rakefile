@@ -1,8 +1,13 @@
+BIN_FOLDER = "bin"
 GEMSPEC = "hash-file.gemspec"
 
-task :build do
-  BIN_FOLDER = "bin"
+def _package_name(spec)
+  package_name = spec.name
+  package_version = spec.version
+  "#{package_name}-#{package_version}"
+end
 
+task :build do
   # Create the bin folder if it does not yet exist
   FileUtils.mkdir_p(BIN_FOLDER)
 
@@ -11,15 +16,25 @@ task :build do
 
   # Build the gem
   system("gem build #{GEMSPEC}")
-  version = Gem::Specification::load(GEMSPEC).version
+  spec = Gem::Specification::load(GEMSPEC)
 
   # Move the artifact into the bin folder
-  File.rename("jekyll-hash-file-#{version}.gem", "#{BIN_FOLDER}/jekyll-hash-file.gem")
+  package_name = _package_name(spec)
+  File.rename("#{package_name}.gem", "#{BIN_FOLDER}/#{package_name}.gem")
 end
 
 task :install => :build do
   # Uninstall and install the gem
-  package_name = Gem::Specification::load(GEMSPEC).name
+  spec = Gem::Specification::load(GEMSPEC)
+  package_name = _package_name(spec)
   system("gem uninstall #{package_name}")
-  system("gem install bin/#{package_name}.gem")
+  system("gem install #{BIN_FOLDER}/#{package_name}.gem")
+end
+
+task :publish => :build do
+  # Build and push the gem
+  spec = Gem::Specification::load(GEMSPEC)
+  package_name = _package_name(spec)
+  puts(package_name)
+  system("gem push #{BIN_FOLDER}/#{package_name}.gem")
 end

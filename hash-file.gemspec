@@ -1,6 +1,8 @@
+require_relative "lib/jekyll-hash-file/version"
+
 Gem::Specification.new do |s|
   s.name        = 'jekyll-hash-file'
-  s.version     = '1.0.0'
+  s.version     = Jekyll::HashFile::VERSION
   s.date        = '2024-12-31'
   s.summary     = 'Liquid filter to hash file references to bust the browser cache in Jekyll 3 and 4'
   s.description = ''
