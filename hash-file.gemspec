@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = ''
   s.authors     = ['Willem \'Jip\' Wijnia']
   s.files       = Dir["lib/**/*"]
-  s.homepage    = ''
+  s.homepage    = 'https://github.com/Garanas/jekyll-hash-file'
   s.license     = 'MIT'
 
   s.required_ruby_version = ">= 3.0.0"
